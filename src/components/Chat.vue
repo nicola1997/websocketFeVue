@@ -3,7 +3,7 @@
     <form class="form-join">
       <input v-model="name" type="text" id="name" maxlength="8" placeholder="Name" size="5" required>
       <input v-model="chatRoom" type="text" id="room" placeholder="Chat room" size="5" required>
-      <button @click="send" id="join" >Join</button>
+      <button @click="sendName" id="join" >Join</button>
     </form>
 
     <ul class="chat-display"></ul>
@@ -12,7 +12,9 @@
 
     <p class="room-list"></p>
 
-    <p class="activity"></p>
+    <p class="activity">
+      {{messaggiChat}}
+    </p>
 
     <form class="form-msg">
       <input v-model="yourMessage" type="text" id="message" placeholder="Your message" required>
@@ -26,7 +28,7 @@ import {ref} from "vue";
 let yourMessage=ref('')
 let name=ref('')
 let chatRoom=ref('')
-
+let messaggiChat=ref('')
 let stompClient = new StompJs.Client({
   brokerURL: 'ws://localhost:8080/gs-guide-websocket'
 });
@@ -38,18 +40,19 @@ stompClient.onConnect = (frame) => {
     showGreeting(JSON.parse(greeting.body).content);
   });
 };
-
+function showGreeting(parole){
+  messaggiChat.value=parole
+}
+function sendName() {
+  stompClient.publish({
+    destination: "/app/hello",
+    body: JSON.stringify({'name': name.value})
+  });
+}
 function disconnect() {
   stompClient.deactivate();
   setConnected(false);
   console.log("Disconnected");
-}
-
-function sendName() {
-  stompClient.publish({
-    destination: "/app/hello",
-    body: JSON.stringify({'name': $("#name").val()})
-  });
 }
 </script>
 
