@@ -32,25 +32,23 @@ let stompClient = new StompJs.Client({
 stompClient.activate();
 let isDisabled=ref(true)
 
-
 stompClient.onConnect = () => {
   stompClient.subscribe('/topic/greetings', (message) => {
     const dataCorrente = new Date();
     const oraMinuti = dataCorrente.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
     messaggi.value.push(JSON.parse(message.body).name+": "+JSON.parse(message.body).messaggio+" " + oraMinuti);
+  name.value=" "
+    yourMessage.value=" "
   });
 };
-function sendMessage() {
-  const nameTemp=name.value
-  const yourMessageTemp=yourMessage.value
-  name.value=" "
-  yourMessage.value=" "
+function sendMessage() {debugger
+
   isDisabled.value=false
   stompClient.publish({
     destination: "/app/message",
     body: JSON.stringify({
-      'name': nameTemp.value,
-      'messaggio': yourMessageTemp.value
+      'name': name.value,
+      'messaggio': yourMessage.value
     })
   });
 }
