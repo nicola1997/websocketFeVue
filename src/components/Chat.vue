@@ -37,7 +37,6 @@ stompClient.onConnect = () => {
     const dataCorrente = new Date();
     const oraMinuti = dataCorrente.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
     messaggi.value.push(JSON.parse(message.body).name+": "+JSON.parse(message.body).messaggio+" " + oraMinuti);
-  name.value=" "
     yourMessage.value=" "
   });
 };
