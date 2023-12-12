@@ -26,7 +26,7 @@ let name = ref('');
 let chatRoom = ref('');
 let messaggi = ref([]);
 let stompClient = new StompJs.Client({
-  brokerURL: 'ws://localhost:8080/gs-guide-websocket'
+  brokerURL: 'ws://websocketbe1-f140b52c1254.herokuapp.com/gs-guide-websocket'
 });
 stompClient.activate();
 let isDisabled=ref(true)
