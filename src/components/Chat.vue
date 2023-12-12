@@ -32,7 +32,7 @@ stompClient.activate();
 let isDisabled=ref(true)
 
 
-stompClient.onConnect = () => {debugger
+stompClient.onConnect = () => {
   stompClient.subscribe('/topic/greetings', (message) => {
     const dataCorrente = new Date();
     const oraMinuti = dataCorrente.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
