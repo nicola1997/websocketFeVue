@@ -28,6 +28,7 @@ let messaggi = ref([]);
 let stompClient = new StompJs.Client({
   brokerURL: 'ws://websocketbe1-f140b52c1254.herokuapp.com/gs-guide-websocket'
 });
+
 stompClient.activate();
 let isDisabled=ref(true)
 
