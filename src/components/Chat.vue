@@ -49,6 +49,7 @@ function sendMessage() {
       'messaggio': yourMessage.value
     })
   });
+  yourMessage=""
 }
 
 function disconnect() {
