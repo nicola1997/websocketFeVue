@@ -49,7 +49,7 @@ function sendMessage() {
       'messaggio': yourMessage.value
     })
   });
-  yourMessage=""
+  yourMessage=" "
 }
 
 function disconnect() {
