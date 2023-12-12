@@ -5,9 +5,7 @@ import Chat from "@/components/Chat.vue";
 
 <template>
   <header>
-
     <div class="wrapper">
-
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
@@ -15,12 +13,10 @@ import Chat from "@/components/Chat.vue";
       </nav>
     </div>
   </header>
-
   <RouterView />
 </template>
 
 <style scoped>
-
 @media (min-width: 1024px) {
   header {
     display: flex;

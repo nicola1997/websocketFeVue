@@ -3,58 +3,63 @@
     <form class="form-join">
       <input v-model="name" type="text" id="name" maxlength="8" placeholder="Name" size="5" required>
       <input v-model="chatRoom" type="text" id="room" placeholder="Chat room" size="5" required>
-      <button @click="sendName" id="join" >Join</button>
+      <button type="button" @click="sendMessage" id="join">Join</button>
     </form>
 
-    <ul class="chat-display"></ul>
-
-    <p class="user-list"></p>
-
-    <p class="room-list"></p>
-
-    <p class="activity">
-      {{messaggiChat}}
-    </p>
+    <ul class="chat-display">
+      <li style="color: crimson" v-for="m in messaggi" :key="m" class="post">
+        {{ m }}
+      </li>
+    </ul>
 
     <form class="form-msg">
-      <input v-model="yourMessage" type="text" id="message" placeholder="Your message" required>
-      <button type="submit">Send</button>
+      <input :disabled="isDisabled" v-model="yourMessage" type="text" id="message" placeholder="Your message" required>
+      <button :disabled="isDisabled" @click=sendMessage type="button">Send</button>
     </form>
   </main>
 </template>
 
 <script setup>
-import {ref} from "vue";
-let yourMessage=ref('')
-let name=ref('')
-let chatRoom=ref('')
-let messaggiChat=ref('')
+import { ref } from "vue";
+let yourMessage = ref('');
+let name = ref('');
+let chatRoom = ref('');
+let messaggi = ref([]);
 let stompClient = new StompJs.Client({
   brokerURL: 'ws://localhost:8080/gs-guide-websocket'
 });
 stompClient.activate();
+let isDisabled=ref(true)
 
 
-stompClient.onConnect = (frame) => {
-  stompClient.subscribe('/topic/greetings', (greeting) => {
-    showGreeting(JSON.parse(greeting.body).content);
+stompClient.onConnect = () => {debugger
+  stompClient.subscribe('/topic/greetings', (message) => {
+    const dataCorrente = new Date();
+    const oraMinuti = dataCorrente.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    messaggi.value.push(JSON.parse(message.body).name+": "+JSON.parse(message.body).messaggio+" " + oraMinuti);
   });
 };
-function showGreeting(parole){
-  messaggiChat.value=parole
-}
-function sendName() {
+function sendMessage() {
+  isDisabled.value=false
   stompClient.publish({
-    destination: "/app/hello",
-    body: JSON.stringify({'name': name.value})
+    destination: "/app/message",
+    body: JSON.stringify({
+      'name': name.value,
+      'messaggio': yourMessage.value
+    })
   });
 }
+
 function disconnect() {
   stompClient.deactivate();
   setConnected(false);
   console.log("Disconnected");
 }
 </script>
+
+<style scoped>
+/* CSS styles */
+</style>
 
 
 <style scoped>
