@@ -41,15 +41,18 @@ stompClient.onConnect = () => {
   });
 };
 function sendMessage() {
+  const nameTemp=name.value
+  const yourMessageTemp=yourMessage.value
+  name.value=" "
+  yourMessage.value=" "
   isDisabled.value=false
   stompClient.publish({
     destination: "/app/message",
     body: JSON.stringify({
-      'name': name.value,
-      'messaggio': yourMessage.value
+      'name': nameTemp.value,
+      'messaggio': yourMessageTemp.value
     })
   });
-  yourMessage=" "
 }
 
 function disconnect() {
